@@ -11,6 +11,9 @@ const ASSETS = [
   "./src/systems/player.js",
   "./src/systems/levels.js",
   "./src/systems/camera.js",
+  "./src/systems/platforms.js",
+  "./src/systems/coins.js",
+  "./src/systems/ui.js",
   "https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js",
 ];
 

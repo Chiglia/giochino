@@ -103,7 +103,9 @@ export default class GameScene extends Phaser.Scene {
     // Aggiorna elementi HUD
     this.ui.scoreText.setText("⭐ PUNTI: " + this.score);
     this.ui.levelCoinsText.setText(`🪙 0 / ${levelConfig.coins.length}`);
-    this.ui.levelText.setText(`🏆 LIVELLO ${levelConfig.levelNumber}: ${levelConfig.name.toUpperCase()}`);
+    this.ui.levelText.setText(
+      `🏆 LIVELLO ${levelConfig.levelNumber}: ${levelConfig.name.toUpperCase()}`,
+    );
     this.ui.livesText.setText("❤️ VITE: " + this.lives);
 
     // Rigenera i controlli touch sintonizzati ai colori del livello
@@ -125,24 +127,26 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.flash(450, 175, 169, 236);
 
     // Testo celebrativo primario
-    const completionText = this.add.text(340, 130, "LIVELLO COMPLETATO!", {
-      fontSize: "26px",
-      fontFamily: "monospace",
-      fontWeight: "bold",
-      fill: "#5DCAA5",
-    })
+    const completionText = this.add
+      .text(340, 130, "LIVELLO COMPLETATO!", {
+        fontSize: "26px",
+        fontFamily: "monospace",
+        fontWeight: "bold",
+        fill: "#5DCAA5",
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setShadow(2, 2, "#000000", 4);
 
     // Testo celebrativo secondario (Nome e sottotitolo del prossimo livello)
-    const nextText = this.add.text(340, 185, `PROSSIMO: ${nextLevelConfig.name}\n"${nextLevelConfig.subtitle}"`, {
-      fontSize: "13px",
-      fontFamily: "monospace",
-      align: "center",
-      fill: "#FAC775",
-      lineSpacing: 6
-    })
+    const nextText = this.add
+      .text(340, 185, `PROSSIMO: ${nextLevelConfig.name}\n"${nextLevelConfig.subtitle}"`, {
+        fontSize: "13px",
+        fontFamily: "monospace",
+        align: "center",
+        fill: "#FAC775",
+        lineSpacing: 6,
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setShadow(1, 1, "#000000", 3);
@@ -189,7 +193,9 @@ export default class GameScene extends Phaser.Scene {
 
     const levelConfig = getLevelConfig(this.currentLevelIndex);
     this.ui.scoreText.setText("⭐ PUNTI: " + this.score);
-    this.ui.levelCoinsText.setText(`🪙 ${this.coinsCollectedThisLevel} / ${levelConfig.coins.length}`);
+    this.ui.levelCoinsText.setText(
+      `🪙 ${this.coinsCollectedThisLevel} / ${levelConfig.coins.length}`,
+    );
 
     // Se tutte le monete del livello sono state raccolte, passa al livello successivo
     if (this.coinsCollectedThisLevel >= levelConfig.coins.length) {
@@ -200,7 +206,7 @@ export default class GameScene extends Phaser.Scene {
   _checkFallOffScreen() {
     if (this.player.y > 400) {
       this.lives--;
-      
+
       // Feedback drammatico: sussulto della camera
       this.cameras.main.shake(250, 0.012);
       this.ui.livesText.setText("❤️ VITE: " + this.lives);
@@ -220,7 +226,7 @@ export default class GameScene extends Phaser.Scene {
           repeat: 4,
           onComplete: () => {
             this.player.alpha = 1;
-          }
+          },
         });
       }
     }
@@ -230,10 +236,10 @@ export default class GameScene extends Phaser.Scene {
     this.physics.pause();
     this.time.delayedCall(600, () => {
       // Trasmette vittoria/sconfitta, punteggio totale e livello massimo raggiunto
-      this.scene.start("GameOverScene", { 
-        won, 
-        score: this.score, 
-        level: this.currentLevelIndex 
+      this.scene.start("GameOverScene", {
+        won,
+        score: this.score,
+        level: this.currentLevelIndex,
       });
     });
   }
@@ -251,14 +257,35 @@ export default class GameScene extends Phaser.Scene {
     // Disegna stelle scintillanti con la sfumatura di colore dell'universo corrente
     this.bgGraphics.fillStyle(starCol, 0.35);
     [
-      [50, 20], [120, 40], [200, 15], [310, 35], [450, 20], [560, 45], [620, 10], [90, 60], [390, 55], [500, 30],
-      [30, 100], [150, 80], [270, 120], [420, 90], [580, 110], [650, 50], [180, 50], [350, 130], [480, 70], [600, 140]
+      [50, 20],
+      [120, 40],
+      [200, 15],
+      [310, 35],
+      [450, 20],
+      [560, 45],
+      [620, 10],
+      [90, 60],
+      [390, 55],
+      [500, 30],
+      [30, 100],
+      [150, 80],
+      [270, 120],
+      [420, 90],
+      [580, 110],
+      [650, 50],
+      [180, 50],
+      [350, 130],
+      [480, 70],
+      [600, 140],
     ].forEach(([x, y]) => this.bgGraphics.fillCircle(x, y, 1.5));
 
     // Stelle dorate fisse grandi e luminose
     this.bgGraphics.fillStyle(0xffd700, 0.65);
     [
-      [80, 15], [290, 50], [520, 25], [610, 85]
+      [80, 15],
+      [290, 50],
+      [520, 25],
+      [610, 85],
     ].forEach(([x, y]) => this.bgGraphics.fillCircle(x, y, 2.5));
   }
 
@@ -304,14 +331,15 @@ export default class GameScene extends Phaser.Scene {
   _createMobileControls() {
     // 1. Pulisce controlli mobili precedenti se presenti per evitare accumuli di eventi
     if (this.mobileControlsGroup) {
-      this.mobileControlsGroup.forEach(child => child.destroy());
+      this.mobileControlsGroup.forEach((child) => child.destroy());
     }
     this.mobileControlsGroup = [];
 
-    // Rileva se il dispositivo supporta il touch o è un sistema mobile
-    const isTouchDevice = this.sys.game.device.input.touch || 
-                         this.sys.game.device.os.android || 
-                         this.sys.game.device.os.iOS;
+    // Rileva se il dispositivo supporta il touch o è un sistema mobile in modo robusto e nativo
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     if (!isTouchDevice) {
       return; // Non renderizza i bottoni su PC desktop per non occupare spazio inutilmente
@@ -326,17 +354,19 @@ export default class GameScene extends Phaser.Scene {
     const colorTheme = levelConfig.platformTint || 0x56ffb8;
 
     // Bottone di Movimento a Sinistra
-    const leftBtn = this.add.circle(55, 265, 24, 0x000000, 0.45)
+    const leftBtn = this.add
+      .circle(55, 265, 24, 0x000000, 0.45)
       .setStrokeStyle(2.5, colorTheme)
       .setScrollFactor(0)
       .setInteractive()
       .setDepth(1000);
-    const leftText = this.add.text(55, 265, "◀", { 
-      fontSize: "20px", 
-      fontFamily: "monospace", 
-      fontWeight: "bold",
-      fill: "#ffffff" 
-    })
+    const leftText = this.add
+      .text(55, 265, "◀", {
+        fontSize: "20px",
+        fontFamily: "monospace",
+        fontWeight: "bold",
+        fill: "#ffffff",
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(1001);
@@ -353,17 +383,19 @@ export default class GameScene extends Phaser.Scene {
     leftBtn.on("pointerout", releaseLeft);
 
     // Bottone di Movimento a Destra
-    const rightBtn = this.add.circle(120, 265, 24, 0x000000, 0.45)
+    const rightBtn = this.add
+      .circle(120, 265, 24, 0x000000, 0.45)
       .setStrokeStyle(2.5, colorTheme)
       .setScrollFactor(0)
       .setInteractive()
       .setDepth(1000);
-    const rightText = this.add.text(120, 265, "▶", { 
-      fontSize: "20px", 
-      fontFamily: "monospace", 
-      fontWeight: "bold",
-      fill: "#ffffff" 
-    })
+    const rightText = this.add
+      .text(120, 265, "▶", {
+        fontSize: "20px",
+        fontFamily: "monospace",
+        fontWeight: "bold",
+        fill: "#ffffff",
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(1001);
@@ -380,17 +412,19 @@ export default class GameScene extends Phaser.Scene {
     rightBtn.on("pointerout", releaseRight);
 
     // Bottone di Salto (Posizionato sulla destra dello schermo)
-    const jumpBtn = this.add.circle(620, 260, 28, 0x000000, 0.45)
+    const jumpBtn = this.add
+      .circle(620, 260, 28, 0x000000, 0.45)
       .setStrokeStyle(2.5, colorTheme)
       .setScrollFactor(0)
       .setInteractive()
       .setDepth(1000);
-    const jumpText = this.add.text(620, 260, "▲", { 
-      fontSize: "22px", 
-      fontFamily: "monospace", 
-      fontWeight: "bold",
-      fill: "#ffffff" 
-    })
+    const jumpText = this.add
+      .text(620, 260, "▲", {
+        fontSize: "22px",
+        fontFamily: "monospace",
+        fontWeight: "bold",
+        fill: "#ffffff",
+      })
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setDepth(1001);
@@ -409,4 +443,3 @@ export default class GameScene extends Phaser.Scene {
     this.mobileControlsGroup.push(leftBtn, leftText, rightBtn, rightText, jumpBtn, jumpText);
   }
 }
-

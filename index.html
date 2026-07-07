@@ -91,6 +91,77 @@
           transform: rotate(0deg);
         }
       }
+      #pwa-install-banner {
+        display: none;
+        position: fixed;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(13, 13, 26, 0.95);
+        border: 2px solid #56ffb8;
+        box-shadow: 0 0 15px rgba(86, 255, 184, 0.25);
+        border-radius: 8px;
+        padding: 8px 16px;
+        z-index: 9999;
+        align-items: center;
+        gap: 16px;
+        font-family: "Courier New", Courier, monospace;
+        color: #ffffff;
+        font-size: 11px;
+        animation: slideUp 0.5s ease-out;
+        max-width: 90vw;
+        width: 460px;
+        justify-content: space-between;
+      }
+      .pwa-text {
+        letter-spacing: 0.5px;
+        font-weight: bold;
+      }
+      .pwa-buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      #pwa-install-btn {
+        background: #56ffb8;
+        color: #0d0d1a;
+        border: none;
+        padding: 5px 12px;
+        font-size: 10px;
+        font-weight: bold;
+        font-family: "Courier New", Courier, monospace;
+        border-radius: 4px;
+        cursor: pointer;
+        transition:
+          transform 0.1s ease,
+          background 0.2s ease;
+      }
+      #pwa-install-btn:hover {
+        background: #40df9f;
+        transform: scale(1.05);
+      }
+      #pwa-close-btn {
+        background: transparent;
+        color: #888899;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 4px;
+        transition: color 0.2s ease;
+      }
+      #pwa-close-btn:hover {
+        color: #ff5555;
+      }
+      @keyframes slideUp {
+        from {
+          transform: translate(-50%, 40px);
+          opacity: 0;
+        }
+        to {
+          transform: translate(-50%, 0);
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
@@ -104,6 +175,16 @@
         </p>
       </div>
     </div>
+
+    <!-- Banner d'installazione PWA personalizzato -->
+    <div id="pwa-install-banner">
+      <span class="pwa-text">🎮 Gioca a schermo intero! Installa l'App</span>
+      <div class="pwa-buttons">
+        <button id="pwa-install-btn">INSTALLA</button>
+        <button id="pwa-close-btn">✖</button>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <!-- type="module" abilita gli import/export ES6 tra i file -->
     <script type="module" src="src/main.js"></script>
@@ -116,6 +197,38 @@
             .catch((err) => console.error("Errore registrazione Service Worker:", err));
         });
       }
+
+      // Logica del prompt di installazione PWA
+      let deferredPrompt;
+      const installBanner = document.getElementById("pwa-install-banner");
+      const installBtn = document.getElementById("pwa-install-btn");
+      const closeBtn = document.getElementById("pwa-close-btn");
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        // Previene la comparsa del prompt nativo del browser automatico
+        e.preventDefault();
+        // Salva l'evento
+        deferredPrompt = e;
+        // Mostra il banner personalizzato
+        installBanner.style.display = "flex";
+      });
+
+      installBtn.addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+        // Mostra il prompt nativo
+        deferredPrompt.prompt();
+        // Attendi la risposta dell'utente
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log("Risposta installazione utente:", outcome);
+        // Resetta la variabile
+        deferredPrompt = null;
+        // Nascondi il banner
+        installBanner.style.display = "none";
+      });
+
+      closeBtn.addEventListener("click", () => {
+        installBanner.style.display = "none";
+      });
     </script>
   </body>
 </html>
