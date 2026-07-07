@@ -346,7 +346,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     // Abilita puntatori multipli (fino a 2 contemporanei) per saltare e correre insieme
-    if (this.input.pointers.length < 3) {
+    if (
+      this.input.manager &&
+      this.input.manager.pointers &&
+      this.input.manager.pointers.length < 3
+    ) {
       this.input.addPointer(2);
     }
 
