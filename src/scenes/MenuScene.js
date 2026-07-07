@@ -4,6 +4,8 @@
 // Non sa nulla di GameScene: si limita a chiederle
 // a Phaser di avviarla con this.scene.start().
 
+import Phaser from "phaser";
+
 export default class MenuScene extends Phaser.Scene {
   constructor() {
     super({ key: "MenuScene" });

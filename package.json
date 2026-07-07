@@ -4,13 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "build": "echo 'No build step required'",
-    "lint": "echo 'No lint step required'",
-    "start": "node server.js"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "echo 'No lint step required'"
   },
   "dependencies": {
     "express": "^4.19.2",
     "phaser": "^4.2.0"
+  },
+  "devDependencies": {
+    "vite": "^8.1.3"
   }
 }

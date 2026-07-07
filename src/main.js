@@ -2,6 +2,9 @@
 // Responsabilità: configurare Phaser e avviare il gioco.
 // Non contiene logica di gioco.
 
+import Phaser from "phaser";
+window.Phaser = Phaser;
+
 import MenuScene from "./scenes/MenuScene.js";
 import GameScene from "./scenes/GameScene.js";
 import GameOverScene from "./scenes/GameOverScene.js";

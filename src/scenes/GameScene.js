@@ -2,6 +2,7 @@
 // Responsabilità: orchestrare i sistemi (player, piattaforme, monete…)
 // chiamando le funzioni dai moduli in /systems.
 
+import Phaser from "phaser";
 import { createPlayer, updatePlayer } from "../systems/player.js";
 import { createPlatforms } from "../systems/platforms.js";
 import { createCoins, preloadCoins } from "../systems/coins.js";

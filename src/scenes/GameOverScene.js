@@ -6,6 +6,8 @@
 // e Phaser li inietta in this.scene.settings.data, accessibili
 // nel metodo init() che viene chiamato prima di create().
 
+import Phaser from "phaser";
+
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
     super({ key: "GameOverScene" });
