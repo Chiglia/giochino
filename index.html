@@ -9,6 +9,9 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: none;
       }
       body {
         background: #0d0d1a;
@@ -16,10 +19,84 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+      }
+      #orientation-warning {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #0d0d1a;
+        z-index: 99999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #ffffff;
+        font-family: "Courier New", Courier, monospace;
+        padding: 20px;
+      }
+      @media only screen and (orientation: portrait) and (max-width: 900px) {
+        #orientation-warning {
+          display: flex;
+        }
+      }
+      .warning-box {
+        max-width: 320px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid #56ffb8;
+        border-radius: 12px;
+        padding: 30px 20px;
+        box-shadow: 0 0 20px rgba(86, 255, 184, 0.15);
+      }
+      .rotate-icon {
+        font-size: 44px;
+        margin-bottom: 20px;
+        animation: rotateDevice 2.5s infinite ease-in-out;
+        display: inline-block;
+      }
+      .warning-box h2 {
+        font-size: 17px;
+        color: #56ffb8;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .warning-box p {
+        font-size: 12px;
+        color: #a0a0b0;
+        line-height: 1.6;
+      }
+      @keyframes rotateDevice {
+        0% {
+          transform: rotate(0deg);
+        }
+        40% {
+          transform: rotate(-90deg);
+        }
+        60% {
+          transform: rotate(-90deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
       }
     </style>
   </head>
   <body>
+    <div id="orientation-warning">
+      <div class="warning-box" id="warning-card">
+        <div class="rotate-icon" id="warning-icon">📱</div>
+        <h2 id="warning-title">Ruota il dispositivo</h2>
+        <p id="warning-desc">
+          Per giocare al meglio su smartphone o tablet, attiva la rotazione automatica e usa lo
+          schermo in orizzontale.
+        </p>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <!-- type="module" abilita gli import/export ES6 tra i file -->
     <script type="module" src="src/main.js"></script>

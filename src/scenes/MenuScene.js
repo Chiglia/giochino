@@ -42,7 +42,7 @@ export default class MenuScene extends Phaser.Scene {
       .text(
         width / 2,
         height / 2,
-        "← → per muoverti\nSPACE o ↑ per saltare\nRaccogli tutte le monete!",
+        "← → o Controlli Touch per muoverti\nSPACE o ↑ o ▲ per saltare\nRaccogli tutte le monete!",
         {
           fontSize: "13px",
           fontFamily: "monospace",
@@ -55,8 +55,8 @@ export default class MenuScene extends Phaser.Scene {
 
     // Prompt lampeggiante
     const prompt = this.add
-      .text(width / 2, height / 2 + 80, "Premi SPACE per iniziare", {
-        fontSize: "15px",
+      .text(width / 2, height / 2 + 80, "Premi un tasto o TOCCA lo schermo per iniziare", {
+        fontSize: "13px",
         fontFamily: "monospace",
         fill: "#FAC775",
       })
@@ -72,8 +72,11 @@ export default class MenuScene extends Phaser.Scene {
       ease: "Sine.easeInOut",
     });
 
-    // Qualsiasi tasto avvia il gioco
+    // Qualsiasi tasto o tocco sullo schermo avvia il gioco
     this.input.keyboard.once("keydown", () => {
+      this.scene.start("GameScene");
+    });
+    this.input.once("pointerdown", () => {
       this.scene.start("GameScene");
     });
   }

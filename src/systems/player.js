@@ -29,19 +29,32 @@ export function updatePlayer(scene) {
   const { player, cursors, wasd } = scene;
   const onGround = player.body.blocked.down;
 
-  const goLeft = cursors.left.isDown || wasd.left.isDown;
-  const goRight = cursors.right.isDown || wasd.right.isDown;
-  const jump =
+  // Supporto controlli tastiera + touch mobile
+  const goLeft =
+    cursors.left.isDown || wasd.left.isDown || (scene.mobileKeys && scene.mobileKeys.left);
+  const goRight =
+    cursors.right.isDown || wasd.right.isDown || (scene.mobileKeys && scene.mobileKeys.right);
+
+  let jump =
     Phaser.Input.Keyboard.JustDown(cursors.up) ||
     Phaser.Input.Keyboard.JustDown(cursors.space) ||
     Phaser.Input.Keyboard.JustDown(wasd.up);
 
+  if (scene.mobileKeys && scene.mobileKeys.jump) {
+    jump = true;
+    scene.mobileKeys.jump = false; // consuma il salto per un feedback JustDown responsivo
+  }
+
+  // Usa i valori dinamici della scena o quelli di default
+  const speed = scene.playerSpeed || SPEED;
+  const jumpV = scene.playerJump || JUMP_V;
+
   // Movimento orizzontale con attrito naturale
   if (goLeft) {
-    player.setVelocityX(-SPEED);
+    player.setVelocityX(-speed);
     player.setFlipX(true);
   } else if (goRight) {
-    player.setVelocityX(SPEED);
+    player.setVelocityX(speed);
     player.setFlipX(false);
   } else {
     player.setVelocityX(player.body.velocity.x * 0.8);
@@ -49,7 +62,7 @@ export function updatePlayer(scene) {
 
   // Salto — solo se a terra
   if (jump && onGround) {
-    player.setVelocityY(JUMP_V);
+    player.setVelocityY(jumpV);
   }
 
   // Feedback visivo: tint in aria
