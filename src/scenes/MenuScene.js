@@ -72,12 +72,15 @@ export default class MenuScene extends Phaser.Scene {
       ease: "Sine.easeInOut",
     });
 
-    // Qualsiasi tasto o tocco sullo schermo avvia il gioco
-    this.input.keyboard.once("keydown", () => {
+    // Qualsiasi tasto o tocco sullo schermo avvia il gioco con transizione protetta
+    let transitionStarted = false;
+    const startNextScene = () => {
+      if (transitionStarted) return;
+      transitionStarted = true;
       this.scene.start("GameScene");
-    });
-    this.input.once("pointerdown", () => {
-      this.scene.start("GameScene");
-    });
+    };
+
+    this.input.keyboard.once("keydown", startNextScene);
+    this.input.once("pointerdown", startNextScene);
   }
 }

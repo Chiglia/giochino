@@ -40,13 +40,18 @@ export default class GameOverScene extends Phaser.Scene {
 
     // Punteggio finale e livello raggiunto
     this.add
-      .text(width / 2, height / 2, `LIVELLO RAGGIUNTO: ${this.level}\nPUNTEGGIO TOTALE: ⭐ ${this.score}`, {
-        fontSize: "14px",
-        fontFamily: "monospace",
-        fill: "#cccccc",
-        align: "center",
-        lineSpacing: 8
-      })
+      .text(
+        width / 2,
+        height / 2,
+        `LIVELLO RAGGIUNTO: ${this.level}\nPUNTEGGIO TOTALE: ⭐ ${this.score}`,
+        {
+          fontSize: "14px",
+          fontFamily: "monospace",
+          fill: "#cccccc",
+          align: "center",
+          lineSpacing: 8,
+        },
+      )
       .setOrigin(0.5);
 
     // Prompt rigioca
@@ -67,12 +72,15 @@ export default class GameOverScene extends Phaser.Scene {
       ease: "Sine.easeInOut",
     });
 
-    // SPACE o tocco → ricomincia da MenuScene
-    this.input.keyboard.once("keydown-SPACE", () => {
+    // SPACE o tocco → ricomincia da MenuScene con transizione protetta
+    let transitionStarted = false;
+    const restartMenuScene = () => {
+      if (transitionStarted) return;
+      transitionStarted = true;
       this.scene.start("MenuScene");
-    });
-    this.input.once("pointerdown", () => {
-      this.scene.start("MenuScene");
-    });
+    };
+
+    this.input.keyboard.once("keydown-SPACE", restartMenuScene);
+    this.input.once("pointerdown", restartMenuScene);
   }
 }
