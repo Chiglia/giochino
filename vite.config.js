@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   base: "./", // Essenziale per far funzionare il gioco nelle sottocartelle di GitHub Pages
   build: {
-    outDir: "dist", // Cartella di output per la build statica
+    outDir: "docs", // Cartella di output per la build statica
     assetsDir: "assets",
   },
   server: {
